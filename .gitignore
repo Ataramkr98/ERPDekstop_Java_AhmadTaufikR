@@ -1,0 +1,12 @@
+**/target/
+dist/
+.tools/
+.local/
+.workbuddy-ai/
+.env
+.env.*
+!.env.example
+*.log
+*.credential.xml
+**/*private*.pem
+**/rsa-private.pem

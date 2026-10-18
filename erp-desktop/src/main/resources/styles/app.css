@@ -1,0 +1,650 @@
+/*
+ * ERP Desktop stylesheet.
+ *
+ * Design intent: a dense, quiet operations tool. One accent colour, one neutral ramp,
+ * a single elevation treatment (cards) used only where content genuinely needs
+ * grouping, and consistent spacing on an 8px rhythm. Nothing here is decorative - if a
+ * rule does not improve legibility, hierarchy or affordance it does not belong.
+ */
+
+/* ------------------------------------------------------------------ tokens */
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+
+    /* Neutral ramp */
+    -erp-bg: #f5f6f8;
+    -erp-surface: #ffffff;
+    -erp-surface-alt: #fafbfc;
+    -erp-border: #e2e6ec;
+    -erp-border-strong: #c7cfda;
+
+    /* Text */
+    -erp-text: #1f2937;
+    -erp-text-muted: #64748b;
+    -erp-text-inverse: #ffffff;
+
+    /* Accent + semantics */
+    -erp-accent: #23508f;
+    -erp-accent-hover: #1c4177;
+    -erp-accent-soft: #e8eff9;
+    -erp-danger: #b3261e;
+    -erp-danger-soft: #fdf1f0;
+    -erp-success: #1f7a53;
+    -erp-warning: #7a4a00;
+    -erp-warning-soft: #fdf1dc;
+    -erp-warning-border: #f0d9ad;
+
+    /* Sidebar */
+    -erp-nav-bg: #1c2534;
+    -erp-nav-surface: #27334a;
+    -erp-nav-text: #c3ccdb;
+    -erp-nav-text-strong: #ffffff;
+
+    -fx-base: -erp-surface;
+    -fx-background: -erp-bg;
+    -fx-control-inner-background: -erp-surface;
+    -fx-accent: -erp-accent;
+    -fx-focus-color: -erp-accent;
+    -fx-faint-focus-color: -erp-accent-soft;
+    -fx-text-background-color: -erp-text;
+}
+
+.label {
+    -fx-text-fill: -erp-text;
+}
+
+/* ------------------------------------------------------------------ typography */
+
+.title {
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: -erp-text-muted;
+}
+
+.panel-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -erp-text-muted;
+}
+
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -erp-text-muted;
+}
+
+.muted {
+    -fx-text-fill: -erp-text-muted;
+}
+
+.form-error {
+    -fx-text-fill: -erp-danger;
+    -fx-font-size: 12px;
+}
+
+.error {
+    -fx-text-fill: -erp-danger;
+}
+
+.success {
+    -fx-text-fill: -erp-success;
+}
+
+.status-label {
+    -fx-text-fill: -erp-text-muted;
+    -fx-font-size: 12px;
+    -fx-min-height: 16px;
+}
+
+.divider {
+    -fx-background-color: -erp-border;
+}
+
+/* Small non-interactive tag. Used for the active session and the demo marker. */
+.pill {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 9;
+    -fx-border-radius: 9;
+}
+
+.pill.demo {
+    -fx-text-fill: -erp-warning;
+    -fx-background-color: -erp-warning-soft;
+    -fx-border-color: -erp-warning-border;
+}
+
+/* ------------------------------------------------------------------ sign-in */
+
+.auth-root {
+    -fx-background-color: -erp-bg;
+}
+
+.auth-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.auth-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: -erp-text-muted;
+}
+
+/* ------------------------------------------------------------------ shell */
+
+.app-root {
+    -fx-background-color: -erp-bg;
+}
+
+.sidebar {
+    -fx-background-color: -erp-nav-bg;
+    -fx-border-color: #10161f;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-title {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8b9ab1;
+}
+
+.sidebar-footer {
+    -fx-padding: 10 4 0 4;
+    -fx-border-color: #2b3648;
+    -fx-border-width: 1 0 0 0;
+}
+
+.sidebar-session {
+    -fx-text-fill: -erp-nav-text-strong;
+    -fx-font-size: 12px;
+}
+
+/* The muted tone is tuned for light panels; on the dark sidebar it needs to be lighter. */
+.sidebar .muted {
+    -fx-text-fill: #8b9ab1;
+}
+
+.password-warning-box {
+    -fx-padding: 10 4 0 4;
+}
+
+.password-warning {
+    -fx-text-fill: #f0c98a;
+    -fx-font-size: 11.5px;
+}
+
+.sidebar .button.subtle {
+    -fx-text-fill: #cbd5e1;
+}
+
+.sidebar .text-field {
+    -fx-background-color: -erp-nav-surface;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #8b9ab1;
+    -fx-border-color: #35425a;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.sidebar .text-field:focused {
+    -fx-border-color: #7aa7e6;
+}
+
+.module-tree {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/*
+ * Tree cells draw their own text through the skin (a LabeledText node), not through a
+ * child Label, so a ".tree-cell .label" selector never matches: the text silently fell
+ * back to the dark theme colour and the whole navigation was unreadable against the dark
+ * sidebar. The colour therefore has to be set on the cell itself.
+ */
+.module-tree .tree-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 5 4 5 4;
+    -fx-background-radius: 5;
+    -fx-indent: 14;
+    -fx-text-fill: -erp-nav-text;
+    -fx-font-size: 12.5px;
+}
+
+.module-tree .module-group {
+    -fx-font-weight: bold;
+    -fx-text-fill: #8b9ab1;
+    -fx-font-size: 11.5px;
+}
+
+.module-tree .tree-cell:selected {
+    -fx-background-color: #31435f;
+    -fx-text-fill: -erp-nav-text-strong;
+}
+
+.module-tree .tree-cell:focused {
+    -fx-border-color: #7aa7e6;
+    -fx-border-radius: 5;
+}
+
+.module-tree .tree-cell .arrow {
+    -fx-background-color: #8b9ab1;
+}
+
+/* Keep the sidebar's scrollbar from painting a bright strip over the dark panel. */
+.module-tree .scroll-bar:vertical,
+.module-tree .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.module-tree .scroll-bar:vertical .thumb,
+.module-tree .scroll-bar:horizontal .thumb {
+    -fx-background-color: #3d4c66;
+}
+
+/* The shell marks these regions with ids, so they are targeted by id, not class. */
+#top-bar {
+    -fx-background-color: -erp-surface;
+    -fx-border-color: -erp-border;
+    -fx-border-width: 0 0 1 0;
+}
+
+#breadcrumb {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -erp-text;
+}
+
+/* ------------------------------------------------------------------ pages */
+
+.entity-view, .overview {
+    -fx-background-color: -erp-bg;
+}
+
+#entity-toolbar {
+    -fx-padding: 2 0 2 0;
+}
+
+#entity-pager {
+    -fx-padding: 2 0 0 0;
+}
+
+.panel {
+    -fx-background-color: -erp-surface;
+    -fx-border-color: -erp-border;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 16;
+}
+
+.empty-state {
+    -fx-background-color: -erp-surface-alt;
+}
+
+.empty-state-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-fill: -erp-text;
+}
+
+.error-state {
+    -fx-background-color: -erp-surface-alt;
+}
+
+.error-detail {
+    -fx-text-fill: -erp-danger;
+    -fx-font-size: 12.5px;
+}
+
+/* ------------------------------------------------------------------ overview */
+
+.metric {
+    -fx-background-color: -erp-surface;
+    -fx-border-color: -erp-border;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 16;
+}
+
+.metric-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -erp-text;
+}
+
+.metric-title {
+    -fx-font-size: 13px;
+    -fx-text-fill: -erp-text;
+}
+
+.overview-notice {
+    -fx-background-color: #fdf6e8;
+    -fx-border-color: #ecd9ac;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 12 16 12 16;
+    -fx-text-fill: #6d4c12;
+    -fx-font-size: 12.5px;
+}
+
+.activity-section {
+    -fx-background-color: -erp-surface;
+    -fx-border-color: -erp-border;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 16;
+}
+
+.activity-grid .cell-key {
+    -fx-font-weight: bold;
+}
+
+.activity-grid .cell-amount {
+    -fx-text-fill: -erp-text;
+}
+
+/* ------------------------------------------------------------------ controls */
+
+.button {
+    -fx-background-color: -erp-surface;
+    -fx-text-fill: #33435a;
+    -fx-border-color: -erp-border-strong;
+    -fx-border-width: 1;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-font-size: 12.5px;
+}
+
+.button:hover {
+    -fx-background-color: #eef2f7;
+    -fx-border-color: #a9b4c3;
+}
+
+.button:pressed {
+    -fx-background-color: #e2e8f0;
+}
+
+.button:focused {
+    -fx-border-color: -erp-accent;
+}
+
+.button.primary {
+    -fx-background-color: -erp-accent;
+    -fx-border-color: -erp-accent;
+    -fx-text-fill: -erp-text-inverse;
+    -fx-font-weight: bold;
+}
+
+.button.primary:hover {
+    -fx-background-color: -erp-accent-hover;
+    -fx-border-color: -erp-accent-hover;
+}
+
+.button.primary:focused {
+    -fx-border-color: -erp-text;
+}
+
+.button.danger {
+    -fx-text-fill: -erp-danger;
+    -fx-border-color: #e6c4c1;
+}
+
+.button.danger:hover {
+    -fx-background-color: -erp-danger-soft;
+    -fx-border-color: -erp-danger;
+}
+
+/* Secondary, lower-emphasis action. */
+.button.subtle {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: -erp-text-muted;
+    -fx-padding: 6 10;
+}
+
+.button.subtle:hover {
+    -fx-background-color: #eef2f7;
+    -fx-text-fill: -erp-text;
+}
+
+/* Demo entry point: visible enough to be noticed, distinct from a real action. */
+.button.demo {
+    -fx-background-color: #fdf6e8;
+    -fx-border-color: #e2c68c;
+    -fx-text-fill: #6d4c12;
+    -fx-font-weight: bold;
+}
+
+.button.demo:hover {
+    -fx-background-color: #fbeeca;
+    -fx-border-color: #d4ac5f;
+}
+
+.toggle-button {
+    -fx-background-color: -erp-surface;
+    -fx-text-fill: #33435a;
+    -fx-border-color: -erp-border-strong;
+    -fx-border-width: 1;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-font-size: 12.5px;
+}
+
+.toggle-button:selected {
+    -fx-background-color: -erp-accent-soft;
+    -fx-border-color: -erp-accent;
+    -fx-text-fill: -erp-accent;
+}
+
+.toggle-button:focused {
+    -fx-border-color: -erp-accent;
+}
+
+.text-field, .text-area, .combo-box, .date-picker {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: -erp-border-strong;
+    -fx-border-width: 1;
+    -fx-background-color: -erp-surface;
+}
+
+.text-field {
+    -fx-padding: 8;
+}
+
+.text-area {
+    -fx-padding: 8;
+}
+
+.text-field:focused, .text-area:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: -erp-accent;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 6 9;
+}
+
+.progress-bar {
+    -fx-pref-height: 4px;
+    -fx-background-color: -erp-border;
+    -fx-background-radius: 2;
+    -fx-border-radius: 2;
+}
+
+.progress-bar .bar {
+    -fx-background-color: -erp-accent;
+    -fx-background-radius: 2;
+    -fx-border-radius: 2;
+}
+
+#top-progress {
+    -fx-pref-height: 3px;
+}
+
+/* ------------------------------------------------------------------ table */
+
+.table-view {
+    -fx-background-color: -erp-surface;
+    -fx-border-color: -erp-border;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+.table-view .corner {
+    -fx-background-color: -erp-surface-alt;
+}
+
+.table-view .column-header-background,
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: -erp-surface-alt;
+}
+
+.table-view .column-header {
+    -fx-size: 40;
+    -fx-border-color: transparent transparent -erp-border transparent;
+}
+
+.table-view .column-header .label {
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 10;
+    -fx-font-size: 11.5px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -erp-text-muted;
+}
+
+.table-row-cell {
+    -fx-background-color: -erp-surface;
+    -fx-cell-size: 40;
+    -fx-border-color: transparent transparent #eef1f5 transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -erp-surface-alt;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: -erp-accent-soft;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -erp-accent-soft;
+    -fx-border-color: -erp-accent transparent transparent transparent;
+    -fx-border-width: 2 0 0 0;
+}
+
+.table-row-cell:focused {
+    -fx-background-color: -erp-accent-soft;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: -erp-text;
+}
+
+.table-cell {
+    -fx-padding: 7 10;
+    -fx-border-color: transparent;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-cell.cell-number {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.table-cell.cell-date {
+    -fx-text-fill: -erp-text-muted;
+}
+
+.table-cell.cell-bool {
+    -fx-text-fill: -erp-text-muted;
+}
+
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal,
+.scroll-pane .scroll-bar:vertical,
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane, .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ------------------------------------------------------------------ dialogs */
+
+.dialog-pane {
+    -fx-background-color: -erp-surface;
+    -fx-border-radius: 8;
+}
+
+.dialog-pane .content {
+    -fx-background-color: -erp-surface;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: -erp-surface;
+    -fx-border-color: transparent transparent -erp-border transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -erp-text;
+}
+
+.dialog-body {
+    -fx-font-size: 13px;
+    -fx-text-fill: -erp-text-muted;
+    -fx-padding: 6 2 12 2;
+}
+
+.tooltip {
+    -fx-background-color: #10161f;
+    -fx-text-fill: white;
+    -fx-font-size: 11.5px;
+}
+
+.icon-path {
+    -fx-fill: transparent;
+    -fx-stroke: -erp-text-muted;
+    -fx-stroke-width: 1.5;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+.button.primary .icon-path { -fx-stroke: white; }
+.sidebar .icon-path { -fx-stroke: -erp-nav-text; }
+.button.overview-navigation {
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: -erp-nav-text;
+    -fx-padding: 8;
+}
+.button.overview-navigation:hover, .button.overview-navigation.active {
+    -fx-background-color: -erp-nav-surface;
+    -fx-text-fill: -erp-nav-text-strong;
+}
+.pill.record-state {
+    -fx-text-fill: -erp-accent;
+    -fx-background-color: -erp-accent-soft;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-size: 11px;
+}
+.document-row { -fx-padding: 8 0; }
+.cell-key, .table-cell.cell-status { -fx-font-weight: bold; }
+.status-label.error { -fx-text-fill: -erp-danger; }
+.status-label.success { -fx-text-fill: -erp-success; }
+#business-actions { -fx-padding: 8 0; }
+.separator { -fx-background-color: -erp-border; }
